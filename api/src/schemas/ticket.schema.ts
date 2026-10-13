@@ -24,7 +24,7 @@ export const listTicketsQuerySchema = z.object({
   status: z.enum(TicketStatus).optional(),
   page: positiveIntegerQuerySchema.optional().transform((value) => value ?? 1),
   limit: positiveIntegerQuerySchema.optional()
-    .transform((value) => Math.min(value ?? 10, 100)),
+    .transform((value) => Math.min(value ?? 10, 25)),
 });
 
 export const ticketIdSchema = z.string()

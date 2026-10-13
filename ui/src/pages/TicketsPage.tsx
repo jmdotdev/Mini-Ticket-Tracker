@@ -14,7 +14,7 @@ import type {
 import { TicketStatus } from '../types/ticket';
 
 const emptyStats: TicketStatsData = { open: 0, in_progress: 0, closed: 0, total: 0 };
-const emptyPagination: TicketPagination = { page: 1, limit: 100, total: 0, totalPages: 0 };
+const emptyPagination: TicketPagination = { page: 1, limit: 5, total: 0, totalPages: 0 };
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -32,7 +32,7 @@ export default function TicketsPage() {
     setError('');
 
     Promise.all([
-      ticketApi.list({ page, limit: 100 }),
+      ticketApi.list({ page, limit: 25 }),
       ticketApi.stats(),
     ])
       .then(([ticketResult, nextStats]: [TicketListResult, TicketStatsData]) => {
