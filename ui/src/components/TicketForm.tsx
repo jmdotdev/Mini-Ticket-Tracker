@@ -7,6 +7,7 @@ import type { z } from 'zod';
 interface TicketFormProps {
   saving: boolean;
   onCreate: (input: CreateTicketInput) => Promise<boolean>;
+  onClose: () => void;
 }
 
 type CreateTicketFormValues = z.input<typeof createTicketSchema>;
@@ -17,7 +18,7 @@ const initialDraft: CreateTicketFormValues = {
   priority: TicketPriority.Medium,
 };
 
-export default function TicketForm({ saving, onCreate }: TicketFormProps) {
+export default function TicketForm({ saving, onCreate, onClose }: TicketFormProps) {
   const {
     register,
     handleSubmit,
@@ -29,14 +30,23 @@ export default function TicketForm({ saving, onCreate }: TicketFormProps) {
   });
 
   async function submit(input: CreateTicketInput) {
-    if (await onCreate(input)) reset(initialDraft);
+    if (await onCreate(input)) {
+      reset(initialDraft);
+      onClose();
+    }
   }
 
   return (
-    <aside className="overflow-hidden border border-[#dce2dc] bg-[#fbfcfa] shadow-[5px_5px_0_#e4e9e2]" aria-labelledby="create-heading">
-      <div className="relative min-h-[203px] overflow-hidden bg-[#e8eee7] px-6 py-5">
-        <span className="font-mono text-[9px] text-[#66746a]">01 / NEW</span>
-        <span className="absolute right-7 top-9 text-2xl text-[#dd684b]">✳</span>
+    <section className="overflow-hidden border border-[#dce2dc] bg-[#fbfcfa] shadow-[5px_5px_0_#e4e9e2]" aria-labelledby="create-heading">
+      <div className="relative min-h-30 overflow-hidden bg-[#e8eee7] px-6 py-5">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 grid size-8 place-items-center rounded-sm text-xl text-[#657168] hover:bg-white/60 focus-visible:outline-2 focus-visible:outline-[#dd684b]"
+          aria-label="Close new ticket form"
+        >
+          ×
+        </button>
         <h2 id="create-heading" className="mb-2 mt-5 text-[34px] font-medium leading-[0.99]">Add a<br />ticket.</h2>
         <p className="text-[11px] text-[#657168]">Give the next piece of work a place to land.</p>
       </div>
@@ -76,7 +86,6 @@ export default function TicketForm({ saving, onCreate }: TicketFormProps) {
           <span>{saving ? 'Adding ticket...' : 'Create ticket'}</span><span className="text-base">↗</span>
         </button>
       </form>
-      <div className="flex gap-2 border-t border-[#e8ece7] px-6 py-3 text-[10px] leading-relaxed text-[#758078]"><span className="font-mono text-[8px] text-[#dd684b]">TIP</span> Keep titles specific. It helps everyone move faster.</div>
-    </aside>
+    </section>
   );
 }

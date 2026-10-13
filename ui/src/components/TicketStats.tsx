@@ -26,7 +26,6 @@ export default function TicketStats({ stats }: TicketStatsProps) {
         <span className="text-xl font-medium leading-none tabular-nums">{stats.closed}</span>
         <span className="w-full text-center font-mono text-[8px] text-[#b7c1b9] sm:w-auto">CLOSED</span>
       </div>
-      <div className="hidden justify-self-end font-mono text-[9px] leading-relaxed text-[#aeb9b0] sm:block">STATUS<br />OVERVIEW <span className="text-sm text-[#dd684b]">↗</span></div>
     </section>
   );
 }
